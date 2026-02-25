@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Switch, Text, View } from "react-native";
+import { StyleSheet, Switch, Text, View, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AppCard from "../../components/AppCard";
-import { theme } from "../../styles/theme";
+import { router } from "expo-router";
+
+import AppCard from "../../../components/AppCard";
+import { theme } from "../../../styles/theme";
 
 export default function Settings() {
   const [notifications, setNotifications] = useState(true);
@@ -18,18 +20,19 @@ export default function Settings() {
           <Switch value={notifications} onValueChange={setNotifications} />
         }
       />
-
-      <AppCard
-        title="Account"
-        subtitle="Update profile settings"
-        right={
-          <Ionicons
-            name="person-circle-outline"
-            size={24}
-            color={theme.colors.primary}
-          />
-        }
-      />
+      <Pressable onPress={() => router.push("../(tab)/settings/profile")}>
+        <AppCard
+          title="Account"
+          subtitle="Update profile settings"
+          right={
+            <Ionicons
+              name="person-circle-outline"
+              size={24}
+              color={theme.colors.primary}
+            />
+          }
+        />
+      </Pressable>
     </View>
   );
 }
