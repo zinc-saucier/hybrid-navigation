@@ -1,6 +1,15 @@
-import { StyleSheet, Text, View, Alert, ScrollView, TextInput, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  ScrollView,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { z } from "zod";
-import { Controller, useForm } from "react-hook-form"
+import { router } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 
@@ -15,7 +24,7 @@ const profileSchema = z.object({
     .string()
     .trim()
     .min(3, "last name must be at least 3 characters long"),
-  email: z.string().trim().email("ivalid email address"),
+  email: z.string().trim().email("invalid email address"),
   studentId: z.string().trim().length(9, "must be 9 chars"),
   phone: z
     .string()
@@ -25,11 +34,14 @@ const profileSchema = z.object({
     ),
 });
 
-type ProfileForm = z.infer<typeof profileSchema>
+type ProfileForm = z.infer<typeof profileSchema>;
 
 const profile = () => {
-
-  const {control, handleSubmit, formState: {errors, isValid}} = useForm<ProfileForm>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       firstName: "",
@@ -38,22 +50,24 @@ const profile = () => {
       studentId: "",
       phone: "",
     },
-    mode: "onSubmit"
-  })
+    mode: "onSubmit",
+  });
 
   const onSubmit = (data: ProfileForm) => {
-    Alert.alert("profile saved", "profile updated")
-  }
+    Alert.alert("profile saved", "profile updated", [
+      { text: "OK", onPress: () => router.back() },
+    ]);
+  };
 
   return (
-    <ScrollView style = {styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.h1}>Edit Profile</Text>
       {/*First Name */}
       <Text style={styles.label}>First Name</Text>
       <Controller
         control={control}
         name="firstName"
-        render={({field: {onChange, value}})=>(
+        render={({ field: { onChange, value } }) => (
           <TextInput
             style={[styles.input, errors.firstName && styles.inputError]}
             placeholder="first name here"
@@ -63,16 +77,17 @@ const profile = () => {
             autoCapitalize="words"
           />
         )}
-
       />
-      {errors.firstName && (<Text style={styles.error}>{errors.firstName.message}</Text>)}
+      {errors.firstName && (
+        <Text style={styles.error}>{errors.firstName.message}</Text>
+      )}
 
       {/*Last Name */}
       <Text style={styles.label}>Last Name</Text>
       <Controller
         control={control}
         name="lastName"
-        render={({field: {onChange, value}})=>(
+        render={({ field: { onChange, value } }) => (
           <TextInput
             style={[styles.input, errors.lastName && styles.inputError]}
             placeholder="last name here"
@@ -82,16 +97,17 @@ const profile = () => {
             autoCapitalize="words"
           />
         )}
-
       />
-      {errors.lastName && (<Text style={styles.error}>{errors.lastName.message}</Text>)}
+      {errors.lastName && (
+        <Text style={styles.error}>{errors.lastName.message}</Text>
+      )}
 
       {/*Email*/}
       <Text style={styles.label}>Email</Text>
       <Controller
         control={control}
         name="email"
-        render={({field: {onChange, value}})=>(
+        render={({ field: { onChange, value } }) => (
           <TextInput
             style={[styles.input, errors.email && styles.inputError]}
             placeholder="example@example.com"
@@ -102,16 +118,15 @@ const profile = () => {
             autoCapitalize="none"
           />
         )}
-
       />
-      {errors.email && (<Text style={styles.error}>{errors.email.message}</Text>)}
+      {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
 
       {/*Phone number*/}
       <Text style={styles.label}>Phone Number</Text>
       <Controller
         control={control}
         name="phone"
-        render={({field: {onChange, value}})=>(
+        render={({ field: { onChange, value } }) => (
           <TextInput
             style={[styles.input, errors.phone && styles.inputError]}
             placeholder="(555) 555-5555"
@@ -119,19 +134,17 @@ const profile = () => {
             value={value}
             onChange={onChange}
             keyboardType="phone-pad"
-            
           />
         )}
-
       />
-      {errors.phone && (<Text style={styles.error}>{errors.phone.message}</Text>)}
+      {errors.phone && <Text style={styles.error}>{errors.phone.message}</Text>}
 
       {/*Student ID*/}
       <Text style={styles.label}>Student ID</Text>
       <Controller
         control={control}
         name="studentId"
-        render={({field: {onChange, value}})=>(
+        render={({ field: { onChange, value } }) => (
           <TextInput
             style={[styles.input, errors.studentId && styles.inputError]}
             placeholder="A00123456"
@@ -142,13 +155,13 @@ const profile = () => {
             maxLength={9}
           />
         )}
-
       />
-      {errors.studentId && (<Text style={styles.error}>{errors.studentId.message}</Text>)}
-
+      {errors.studentId && (
+        <Text style={styles.error}>{errors.studentId.message}</Text>
+      )}
+    {/* submit button */}
       <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Save Profile</Text>
-
       </Pressable>
     </ScrollView>
   );
@@ -195,11 +208,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   button: {
-  backgroundColor: theme.colors.primary,
-  borderRadius: theme.radius.input,
-  padding: 16,
-  alignItems: "center",
-  marginTop: 28,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.radius.input,
+    padding: 16,
+    alignItems: "center",
+    marginTop: 28,
   },
   buttonText: {
     color: "ffffff",
