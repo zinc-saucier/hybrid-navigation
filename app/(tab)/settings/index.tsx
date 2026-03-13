@@ -31,7 +31,7 @@ export default function Settings() {
         //if saved value exists, use it to set the state
         setNotifications(saved);
       }
-      setIsLoading(false); //trun off loading spinner
+      setIsLoading(false); //turn off loading spinner
     };
     loadNotification();
   }, []);
