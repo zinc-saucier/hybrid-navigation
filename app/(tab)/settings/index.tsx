@@ -70,6 +70,7 @@ export default function Settings() {
           }
         />
       </Pressable>
+      {/* add new card for dark mode lab 4 async storage*/}
     </View>
   );
 }
