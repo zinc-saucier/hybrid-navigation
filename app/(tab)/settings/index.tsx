@@ -14,8 +14,10 @@ import AppCard from "../../../components/AppCard";
 import { theme } from "../../../styles/theme";
 import * as storage from "@/lib/storage";
 
+
 export default function Settings() {
   const [notifications, setNotifications] = useState(true);
+  const [darkTheme, setDarkTheme] = useState(false);
   const [isloading, setIsLoading] = useState(true);
 
   //load save notification preference on mount. start useEffect like thie: useEffect(()=>{},[])
@@ -40,6 +42,30 @@ export default function Settings() {
     setNotifications(value);
     await storage.set(storage.STORAGE_KEY.NOTIFICATION, value);
   };
+
+{/*lab 4 content dark theme async function*/}
+
+  useEffect(() => {
+    //define async function to load value because useEffect cannot be async
+    const loadTheme = async () => {
+      //try to load saved values if they exist
+      const saved = await storage.get<boolean>(
+        storage.STORAGE_KEY.THEME,
+      );
+      if (saved !== null) {
+        //if saved value exists, use it to set the state
+        setDarkTheme(saved);
+      }
+      setIsLoading(false); //turn off loading spinner
+    };
+    loadTheme();
+  }, []);
+
+  const handleTheme = async (value: boolean) => {
+    setDarkTheme(value);
+    await storage.set(storage.STORAGE_KEY.THEME, value);
+  };
+
   if (isloading) {
     return (
       <View style={styles.loadingContainer}>
@@ -70,7 +96,12 @@ export default function Settings() {
           }
         />
       </Pressable>
-      {/* add new card for dark mode lab 4 async storage*/}
+{/* new card for dark mode lab 4 async storage*/}
+      <AppCard
+        title="Dark Theme"
+        subtitle="Use dark theme"
+        right={<Switch value={darkTheme} onValueChange={handleTheme}/>}
+      />
     </View>
   );
 }

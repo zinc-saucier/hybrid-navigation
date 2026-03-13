@@ -4,6 +4,7 @@ import { unknown } from "zod";
 export const STORAGE_KEY = {
   PROFILE: "profile",
   NOTIFICATION: "notificaton",
+  THEME: "theme", /*lab 4*/
 } as const;
 //get value from storage
 export const get = async <T>(key: string): Promise<T | null> => {
