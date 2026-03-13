@@ -1,17 +1,21 @@
-import React from "react";
-import { FlatList, StyleSheet, Text, Pressable, View } from "react-native";
+import React, {useState, useEffect} from "react";
+import { FlatList, StyleSheet, Text, Pressable, View, ActivityIndicator } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import AppCard from "../../../components/AppCard";
 import { theme } from "../../../styles/theme";
+import * as api from "../../../lib/api"
 
-const COURSES = [
-  { id: "cprg216", title: "CPRG-216", subtitle: "Advanced Web Systems" },
-  { id: "cprg303", title: "CPRG-303", subtitle: "Mobile Development" },
-  { id: "cprg306", title: "CPRG-306", subtitle: "Backend APIs" },
-];
+// const COURSES = [
+//   { id: "cprg216", title: "CPRG-216", subtitle: "Advanced Web Systems" },
+//   { id: "cprg303", title: "CPRG-303", subtitle: "Mobile Development" },
+//   { id: "cprg306", title: "CPRG-306", subtitle: "Backend APIs" },
+// ];
 
 export default function CoursesList() {
+
+  const [courses, setcourses] = useState<api.Course[]>([])
+
   return (
     <View style={styles.container}>
       <Text style={styles.h1}>Your Courses</Text>
